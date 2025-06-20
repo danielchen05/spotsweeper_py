@@ -137,8 +137,13 @@ def robust_z_score(x: np.ndarray) -> float:
     if x.ndim != 1:
         raise ValueError("Input x must be a 1D array.") # validity check
     
-    med = np.median(x)
-    mad = np.median(np.abs(x - med))
+    if len(x) <= 1:
+        return 0.0 # no neighbors to compute the z-score
+
+    # compute median and MAD of neighbors
+    neighbors = x[1:]
+    med = np.median(neighbors) 
+    mad = np.median(np.abs(neighbors - med))
     
     if mad == 0 or not np.isfinite(mad): # handle bad values
         return 0.0

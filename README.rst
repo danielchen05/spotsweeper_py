@@ -23,22 +23,50 @@
         :alt: Twitter
         :target: https://twitter.com/spotsweeper_py
 
-.. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
-    :alt: Project generated with PyScaffold
-    :target: https://pyscaffold.org/
+    .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
+        :alt: Project generated with PyScaffold
+        :target: https://pyscaffold.org/
 
-|
 
 ==============
-spotsweeper_py
+SpotSweeper
 ==============
 
 
-    Add a short description here!
+    Spatially-aware quality control for spatial transcriptomics
 
 
-A longer description of your project goes here...
+SpotSweeper is a package developed for spatially-aware quality control (QC) methods
+ for the detection, visualization, and removal of both local outliers and regional artifacts
+  in spot-based spatial transcriptomics data, such as 10x Genomics Visium, using standard QC metrics.
 
+Features
+--------
+- Detect local outliers using robust z-score
+- (to be added) Plotting functions of local outliers
+
+Installation
+------------
+
+Install from PyPI:
+
+.. code-block:: bash
+
+    pip install spotsweeper
+
+Usage
+-----
+
+.. code-block:: python
+
+    import spotsweeper.local_outliers as lo 
+    lo.local_outliers(adata, metric = "total_counts", sample_key = "region")
+
+Project Status
+--------------
+
+This package is in early development. Use with caution; interfaces may change. 
+Tests haven't been implemented and will be added in a future version.
 
 .. _pyscaffold-notes:
 

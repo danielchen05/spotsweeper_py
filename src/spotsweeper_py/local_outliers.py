@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 import anndata as ad
-from typing import Sequence # type hinting
 
 
 def local_outliers(

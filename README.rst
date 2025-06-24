@@ -36,9 +36,7 @@ SpotSweeper
     Spatially-aware quality control for spatial transcriptomics
 
 
-SpotSweeper is a package developed for spatially-aware quality control (QC) methods
- for the detection, visualization, and removal of both local outliers and regional artifacts
-  in spot-based spatial transcriptomics data, such as 10x Genomics Visium, using standard QC metrics.
+SpotSweeper is a package developed for spatially-aware quality control (QC) methods for the detection, visualization, and removal of both local outliers and regional artifacts in spot-based spatial transcriptomics data, such as 10x Genomics Visium, using standard QC metrics.
 
 Features
 --------

@@ -41,7 +41,7 @@ SpotSweeper is a package developed for spatially-aware quality control (QC) meth
 Features
 --------
 - Detect local outliers using robust z-score
-- (to be added) Plotting functions of local outliers
+- Plot and highlight local outliers in a spatial context
 
 Installation
 ------------
@@ -58,7 +58,11 @@ Usage
 .. code-block:: python
 
     import spotsweeper.local_outliers as lo 
+    import spotsweeper.plot_QC as plot_QC
+    import spotsweeper.plot_QCpdf as pdf
     lo.local_outliers(adata, metric = "total_counts", sample_key = "region")
+    plot_QC.plot_qc_metrics(adata,"region",metric = "total_counts", outliers="total_counts_outliers")
+    pdf.plot_qc_pdf(adata,"region",metric = "total_counts", outliers="total_counts_outliers")
 
 Project Status
 --------------

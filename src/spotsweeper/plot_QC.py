@@ -63,9 +63,7 @@ def plot_qc_metrics(
 
     # build custom color scale
     from matplotlib.colors import LinearSegmentedColormap # to handle multiple colors
-    if len(colors) == 2:
-        cmap = sns.color_palette(palette=colors, as_cmap=True)
-    elif len(colors) > 2:
+    if len(colors) >= 2:
         cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
     else:
         raise ValueError("Color gradient must have at least 2 elements")
@@ -73,7 +71,7 @@ def plot_qc_metrics(
     # build plot
     plt.figure(figsize=(6, 6))
     scatter = plt.scatter(
-        df["x"], df["y"], s = point_size**2, cmap = cmap,
+        df["x"], df["y"], c = df[metric], s = point_size**2, cmap = cmap,
         edgecolor=["red" if i else "none" for i in df["outlier"]], # red color for outliers
         linewidths=stroke
     )

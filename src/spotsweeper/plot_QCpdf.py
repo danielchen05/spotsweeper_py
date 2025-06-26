@@ -7,7 +7,7 @@ metrics for a single sample, allowing for easy comparison and analysis across sa
 from matplotlib.backends.backend_pdf import PdfPages
 from anndata import AnnData
 from typing import Sequence
-from plot_QC import plot_qc_metrics
+from spotsweeper.plot_QC import plot_qc_metrics
 
 def plot_qc_pdf(
     adata: AnnData,

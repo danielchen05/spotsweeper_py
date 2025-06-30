@@ -41,7 +41,7 @@ SpotSweeper is a package developed for spatially-aware quality control (QC) meth
 Features
 --------
 - Detect local outliers using robust z-score
-- Plot and highlight local outliers in a spatial context
+- Plot and highlight local outliers in a spatial context (both showing on screen (interactive) and saving to PDF)
 
 Installation
 ------------
@@ -68,7 +68,6 @@ Project Status
 --------------
 
 This package is in early development. Use with caution; interfaces may change. 
-Tests haven't been implemented and will be added in a future version.
 
 .. _pyscaffold-notes:
 

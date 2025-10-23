@@ -7,7 +7,7 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import anndata as ad
-from typing import Optional, Sequence # for type hints
+from typing import Optional, Sequence, Tuple  # added Tuple for figsize
 
 def plot_qc_metrics(
     adata: ad.AnnData,
@@ -18,7 +18,9 @@ def plot_qc_metrics(
     point_size: float = 2,
     colors: Sequence[str] = ("white", "black"),
     stroke: float = 1.0,
-    coord_key: str = "spatial"
+    coord_key: str = "spatial",
+    title: Optional[str] = None,         
+    figsize: Tuple[float, float] = (6, 6)
 ):
     """
     This function generates a plot for specified sample within AnnData object,
@@ -39,6 +41,8 @@ def plot_qc_metrics(
     If length is 2, gradient will be single color gradient. Default to white,black
     - stroke: a float value that specifies border thickness for outlier points. Default to 1.
     - coord_key: key in adata.obsm containing spatial coordinates. Default to "spatial".
+    - title: optional string for custom plot title. If None, defaults to f"Sample: {sample}".
+    - figsize: tuple specifying figure size (width, height). Default to (6, 6).
 
     Returns:
     plt: plot object created by matplotlib to visualize the specified metric and outliers. \
@@ -69,14 +73,14 @@ def plot_qc_metrics(
         raise ValueError("Color gradient must have at least 2 elements")
 
     # build plot
-    plt.figure(figsize=(6, 6))
+    plt.figure(figsize=figsize)  # custom control of figure size
     scatter = plt.scatter(
         df["x"], df["y"], c = df[metric], s = point_size**2, cmap = cmap,
         edgecolor=["red" if i else "none" for i in df["outlier"]], # red color for outliers
         linewidths=stroke
     )
 
-    plt.title(f"Sample: {sample}")
+    plt.title(title if title is not None else f"Sample: {sample}")  # controlled title
     plt.axis("equal")
     plt.gca().invert_yaxis() # to match tissue orientation
     plt.colorbar(scatter, label=metric)

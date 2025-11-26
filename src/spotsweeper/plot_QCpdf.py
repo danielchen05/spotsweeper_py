@@ -7,6 +7,7 @@ metrics for a single sample, allowing for easy comparison and analysis across sa
 from matplotlib.backends.backend_pdf import PdfPages
 from anndata import AnnData
 from typing import Sequence
+import matplotlib.pyplot as plt
 from spotsweeper.plot_QC import plot_qc_metrics
 
 def plot_qc_pdf(
@@ -19,7 +20,8 @@ def plot_qc_pdf(
     point_size: float = 2.0,
     width: float = 5,
     height: float = 5,
-    fname: str = "qc_plots.pdf"
+    fname: str = "qc_plots.pdf",
+    legend: bool = False,  # NEW: pass-through for legends
 ):
     """
     Generate and save QC plots for each sample in AnnData object to PDF file.
@@ -35,6 +37,7 @@ def plot_qc_pdf(
     - width: width of plot in inches
     - height: height of plot in inches
     - fname: path and filename of the output PDF
+    - legend: whether to include an outlier/non-outlier legend on each page. default to False
     """
     sample_list = adata.obs[sample_id].unique()
 
@@ -48,7 +51,9 @@ def plot_qc_pdf(
                 outliers=outliers,
                 point_size=point_size,
                 colors=colors,
-                stroke=stroke,   
+                stroke=stroke,
+                figsize=(width, height),
+                legend=legend,
             )
             fig = plt.gcf()
             fig.set_size_inches(width, height)

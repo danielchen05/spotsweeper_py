@@ -19,8 +19,9 @@ def plot_qc_metrics(
     colors: Sequence[str] = ("white", "black"),
     stroke: float = 1.0,
     coord_key: str = "spatial",
-    title: Optional[str] = None,         
-    figsize: Tuple[float, float] = (6, 6)
+    title: Optional[str] = None,
+    figsize: Tuple[float, float] = (6, 6),
+    legend: bool = False,   # NEW: optional legend
 ):
     """
     This function generates a plot for specified sample within AnnData object,
@@ -29,44 +30,47 @@ def plot_qc_metrics(
 
     Args:
     - adata: AnnData object. MUST contain spatial coordinates in adata.obsm[coord_key] \
-    and corresponding QC metric in adata.obs[metric].
+      and corresponding QC metric in adata.obs[metric].
     - sample_id: a String that identifies column in adata.obs that contains sample IDs. Default to "sample_id".
     - sample: a String that identifies which sample to plot, default to None specified.
     - metric: a String that identifies the metric to be visualized. Must be a column name in adata.obs. \
-    Default to "detected".
+      Default to "detected".
     - outliers: a String that specifies the column name in adata.obs that indicates \
-    whether a data point is considered an outlier. Default to None.
+      whether a data point is considered an outlier. Default to None.
     - point_size: a float value that specifies the size of points in the plot. Default to 2.
     - colors: a Sequence/list specifies colors to be used for gradient scale. \
-    If length is 2, gradient will be single color gradient. Default to white,black
+      If length is 2, gradient will be single color gradient. Default to white,black
     - stroke: a float value that specifies border thickness for outlier points. Default to 1.
     - coord_key: key in adata.obsm containing spatial coordinates. Default to "spatial".
     - title: optional string for custom plot title. If None, defaults to f"Sample: {sample}".
     - figsize: tuple specifying figure size (width, height). Default to (6, 6).
+    - legend: bool flag to add a legend distinguishing outliers vs non-outliers. Default to False.
 
     Returns:
     plt: plot object created by matplotlib to visualize the specified metric and outliers. \
     The plot is not explicitly printed by the function and should be printed by the caller.
     """
+    from matplotlib.colors import LinearSegmentedColormap  # to handle multiple colors
+    from matplotlib.lines import Line2D
+
     # subset adata to the specified sample
-    if sample is None: # if no sample ID provided, default to the first unique ID
+    if sample is None:  # if no sample ID provided, default to the first unique ID
         sample = adata.obs[sample_id].unique()[0]
     mask = np.array(adata.obs[sample_id] == sample)
-    adata_sub = adata[mask].copy() # copy to avoid issues
+    adata_sub = adata[mask].copy()  # copy to avoid issues
 
     # extract relevant data to build the plot
     coords = np.array(adata_sub.obsm[coord_key])
-    df = pd.DataFrame(data=coords, index=adata_sub.obs_names, columns=["x","y"])
+    df = pd.DataFrame(data=coords, index=adata_sub.obs_names, columns=["x", "y"])
     df[metric] = adata_sub.obs[metric]
 
     # add outliers if they are present
     if outliers is not None:
-        df["outlier"] = adata_sub.obs[outliers]
+        df["outlier"] = adata_sub.obs[outliers].astype(bool)
     else:
         df["outlier"] = False
 
     # build custom color scale
-    from matplotlib.colors import LinearSegmentedColormap # to handle multiple colors
     if len(colors) >= 2:
         cmap = LinearSegmentedColormap.from_list("custom_cmap", colors)
     else:
@@ -75,16 +79,47 @@ def plot_qc_metrics(
     # build plot
     plt.figure(figsize=figsize)  # custom control of figure size
     scatter = plt.scatter(
-        df["x"], df["y"], c = df[metric], s = point_size**2, cmap = cmap,
-        edgecolor=["red" if i else "none" for i in df["outlier"]], # red color for outliers
-        linewidths=stroke
+        df["x"],
+        df["y"],
+        c=df[metric],
+        s=point_size**2,
+        cmap=cmap,
+        edgecolor=["red" if i else "none" for i in df["outlier"]],  # red color for outliers
+        linewidths=stroke,
     )
 
     plt.title(title if title is not None else f"Sample: {sample}")  # controlled title
     plt.axis("equal")
-    plt.gca().invert_yaxis() # to match tissue orientation
+    plt.gca().invert_yaxis()  # to match tissue orientation
     plt.colorbar(scatter, label=metric)
     plt.xlabel("x")
     plt.ylabel("y")
+
+    # optional legend: outlier vs non-outlier
+    if legend and outliers is not None:
+        legend_elements = [
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                linestyle="None",
+                markerfacecolor="white",
+                markeredgecolor="none",
+                markersize=6,
+                label="Non-outlier",
+            ),
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                linestyle="None",
+                markerfacecolor="white",
+                markeredgecolor="red",
+                markersize=6,
+                label="Outlier",
+            ),
+        ]
+        plt.legend(handles=legend_elements, loc="upper right", frameon=True)
+
     plt.tight_layout()
     return plt

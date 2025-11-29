@@ -3,7 +3,6 @@ plot_QC.py - Parallel to plotQCmetrics.R
 Plot QC metrics for a single sample in AnnData object
 """
 import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
 import pandas as pd
 import anndata as ad
@@ -84,7 +83,7 @@ def plot_qc_metrics(
         c=df[metric],
         s=point_size**2,
         cmap=cmap,
-        edgecolor=["red" if i else "none" for i in df["outlier"]],  # red color for outliers
+        edgecolor=["red" if i else "black" for i in df["outlier"]],  # red color for outliers
         linewidths=stroke,
     )
 
@@ -98,26 +97,12 @@ def plot_qc_metrics(
     # optional legend: outlier vs non-outlier
     if legend and outliers is not None:
         legend_elements = [
-            Line2D(
-                [0],
-                [0],
-                marker="o",
-                linestyle="None",
-                markerfacecolor="white",
-                markeredgecolor="none",
-                markersize=6,
-                label="Non-outlier",
-            ),
-            Line2D(
-                [0],
-                [0],
-                marker="o",
-                linestyle="None",
-                markerfacecolor="white",
-                markeredgecolor="red",
-                markersize=6,
-                label="Outlier",
-            ),
+            Line2D([0], [0], marker="o", linestyle="None",
+                markerfacecolor="white", markeredgecolor="black",
+                markersize=6, label="Non-outlier"),
+            Line2D([0], [0], marker="o", linestyle="None",
+                markerfacecolor="white", markeredgecolor="red",
+                markersize=6, label="Outlier"),
         ]
         plt.legend(handles=legend_elements, loc="upper right", frameon=True)
 

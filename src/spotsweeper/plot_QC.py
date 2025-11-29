@@ -20,7 +20,8 @@ def plot_qc_metrics(
     coord_key: str = "spatial",
     title: Optional[str] = None,
     figsize: Tuple[float, float] = (6, 6),
-    legend: bool = False,   # NEW: optional legend
+    legend: bool = False,   # optional legend
+    ring_overlay: bool = True,  # 2-layer (Visium) vs 1-layer (Visium HD)
 ):
     """
     This function generates a plot for specified sample within AnnData object,
@@ -44,6 +45,10 @@ def plot_qc_metrics(
     - title: optional string for custom plot title. If None, defaults to f"Sample: {sample}".
     - figsize: tuple specifying figure size (width, height). Default to (6, 6).
     - legend: bool flag to add a legend distinguishing outliers vs non-outliers. Default to False.
+    - ring_overlay: if True (default), use a 2-layer style where outliers are drawn as \
+      red rings on top of a gradient background (recommended for standard Visium). \
+      If False, use a 1-layer style where outliers have red edges on the same points \
+      (recommended for dense Visium HD).
 
     Returns:
     plt: plot object created by matplotlib to visualize the specified metric and outliers. \
@@ -78,27 +83,39 @@ def plot_qc_metrics(
     # build plot
     plt.figure(figsize=figsize)  # custom control of figure size
 
-    # base layer: all spots, gradient only, no edges
-    base = plt.scatter(
-        df["x"],
-        df["y"],
-        c=df[metric],
-        s=point_size**2,
-        cmap=cmap,
-        linewidths=0,
-        rasterized=True,
-    )
+    if ring_overlay:
+        # 2-layer: base gradient + red rings (good for Visium)
+        base = plt.scatter(
+            df["x"],
+            df["y"],
+            c=df[metric],
+            s=point_size**2,
+            cmap=cmap,
+            linewidths=0,
+            rasterized=True,
+        )
 
-    # overlay: outliers as red rings
-    highlighted = df[df["outlier"]]
-    if outliers is not None and len(highlighted) > 0:
-        plt.scatter(
-            highlighted["x"],
-            highlighted["y"],
-            facecolors="none",
-            edgecolors="red",
-            linewidths=stroke * 1.5,
-            s=(point_size * 1.4) ** 2,
+        # overlay: outliers as red rings
+        highlighted = df[df["outlier"]]
+        if outliers is not None and len(highlighted) > 0:
+            plt.scatter(
+                highlighted["x"],
+                highlighted["y"],
+                facecolors="none",
+                edgecolors="red",
+                linewidths=stroke * 1.5,
+                s=(point_size * 1.4) ** 2,
+            )
+    else:
+        # 1-layer: single scatter with red edges for outliers (better for Visium HD)
+        base = plt.scatter(
+            df["x"],
+            df["y"],
+            c=df[metric],
+            s=point_size**2,
+            cmap=cmap,
+            edgecolors=["red" if i else "none" for i in df["outlier"]],
+            linewidths=stroke,
         )
 
     plt.title(title if title is not None else f"Sample: {sample}")  # controlled title

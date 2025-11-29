@@ -77,20 +77,34 @@ def plot_qc_metrics(
 
     # build plot
     plt.figure(figsize=figsize)  # custom control of figure size
-    scatter = plt.scatter(
+
+    # base layer: all spots, gradient only, no edges
+    base = plt.scatter(
         df["x"],
         df["y"],
         c=df[metric],
         s=point_size**2,
         cmap=cmap,
-        edgecolor=["red" if i else "black" for i in df["outlier"]],  # red color for outliers
-        linewidths=stroke,
+        linewidths=0,
+        rasterized=True,
     )
+
+    # overlay: outliers as red rings
+    highlighted = df[df["outlier"]]
+    if outliers is not None and len(highlighted) > 0:
+        plt.scatter(
+            highlighted["x"],
+            highlighted["y"],
+            facecolors="none",
+            edgecolors="red",
+            linewidths=stroke * 1.5,
+            s=(point_size * 1.4) ** 2,
+        )
 
     plt.title(title if title is not None else f"Sample: {sample}")  # controlled title
     plt.axis("equal")
     plt.gca().invert_yaxis()  # to match tissue orientation
-    plt.colorbar(scatter, label=metric)
+    plt.colorbar(base, label=metric)  # use base instead of scatter 
     plt.xlabel("x")
     plt.ylabel("y")
 

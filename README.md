@@ -14,17 +14,10 @@ Visium and Visium HD), using standard QC metrics.
 
 ## Manuscript
 
-**Title:**  
-SpotSweeper-py: spatially-aware quality control metrics for spatial omics data in the Python ecosystem
-
-**Authors:**  
-Xingyi Chen, Michael Totty, Stephanie C. Hicks
-
-**Venue:**  
-bioRxiv (2025)
-
-**DOI:**  
-https://doi.org/10.64898/2025.12.06.692760
+**Title:** *SpotSweeper-py: spatially-aware quality control metrics for spatial omics data in the Python ecosystem*  
+**Authors:** Xingyi Chen, Michael Totty, Stephanie C. Hicks  
+**Venue:** bioRxiv (2025)  
+**DOI:** https://doi.org/10.64898/2025.12.06.692760
 
 If you use SpotSweeper-py, please cite the manuscript above.
 
@@ -47,6 +40,21 @@ Install from PyPI:
 ```bash
 pip install spotsweeper
 ```
+
+---
+
+## Dependencies
+
+SpotSweeper depends on the following core Python packages:
+
+- `numpy`
+- `pandas`
+- `scikit-learn`
+- `anndata`
+- `matplotlib`
+
+All required dependencies are installed automatically when installing
+SpotSweeper from PyPI.
 
 ---
 
@@ -113,7 +121,7 @@ Common choices include:
 
 - `total_counts` (library size / UMI count)
 - `log_total_counts` (log-transformed library size)
-- `detected` or `n_genes_by_counts` (number of detected genes)
+- `n_genes_by_counts` (number of detected genes)
 - `pct_counts_mt` (mitochondrial fraction)
 
 If a raw metric (e.g., `total_counts`) is supplied and `log=True` (default),
@@ -130,10 +138,8 @@ to avoid double transformation.
 Use the `direction` argument to control which tail(s) are flagged.
 By default, `direction="lower"`.
 
-- `direction="lower"` (default): flags unusually low metric values  
-  (e.g., low counts or low numbers of genes)
-- `direction="higher"`: flags unusually high metric values  
-  (e.g., high mitochondrial fraction)
+- `direction="lower"` (default): flags unusually low metric values  (e.g., low counts or low numbers of genes)
+- `direction="higher"`: flags unusually high metric values  (e.g., high mitochondrial fraction)
 - `direction="both"`: flags both tails
 
 ---

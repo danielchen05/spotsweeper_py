@@ -6,8 +6,7 @@
 Spatially-aware quality control for spatial transcriptomics
 
 SpotSweeper-py is a PyPI package developed for spatially-aware quality control (QC)
-methods for the detection, visualization, and removal of both local outliers and
-regional artifacts in spot-based spatial transcriptomics data (e.g., 10x Genomics
+methods for the detection, visualization, and removal of local outliers in spot-based spatial transcriptomics data (e.g., 10x Genomics
 Visium and Visium HD), using standard QC metrics.
 
 ---

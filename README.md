@@ -1,11 +1,11 @@
-# SpotSweeper
+# SpotSweeper-py
 
 [![PyPI-Server](https://img.shields.io/pypi/v/spotsweeper.svg)](https://pypi.org/project/spotsweeper/)
 [![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
 
 Spatially-aware quality control for spatial transcriptomics
 
-SpotSweeper is a Python package developed for spatially-aware quality control (QC)
+SpotSweeper-py is a PyPI package developed for spatially-aware quality control (QC)
 methods for the detection, visualization, and removal of both local outliers and
 regional artifacts in spot-based spatial transcriptomics data (e.g., 10x Genomics
 Visium and Visium HD), using standard QC metrics.
@@ -45,7 +45,7 @@ pip install spotsweeper
 
 ## Dependencies
 
-SpotSweeper depends on the following core Python packages:
+SpotSweeper-py depends on the following core Python packages:
 
 - `numpy`
 - `pandas`
@@ -54,13 +54,13 @@ SpotSweeper depends on the following core Python packages:
 - `matplotlib`
 
 All required dependencies are installed automatically when installing
-SpotSweeper from PyPI.
+SpotSweeper-py from PyPI.
 
 ---
 
 ## Usage
 
-SpotSweeper operates directly on `AnnData` objects. A typical workflow is:
+SpotSweeper-py operates directly on `AnnData` objects. A typical workflow is:
 
 - Detect local outliers for a QC metric (results are written to `adata.obs`)
 - Visualize a QC metric for a single sample, optionally highlighting outliers
@@ -116,7 +116,7 @@ pdf.plot_qc_pdf(
 
 ## Common QC metrics
 
-SpotSweeper can be applied to any numeric QC metric stored in `adata.obs`.
+SpotSweeper-py can be applied to any numeric QC metric stored in `adata.obs`.
 Common choices include:
 
 - `total_counts` (library size / UMI count)
@@ -125,7 +125,7 @@ Common choices include:
 - `pct_counts_mt` (mitochondrial fraction)
 
 If a raw metric (e.g., `total_counts`) is supplied and `log=True` (default),
-SpotSweeper will internally apply `log1p` and store the transformed values as
+SpotSweeper-py will internally apply `log1p` and store the transformed values as
 `<metric>_log` before computing local z-scores.
 
 If a precomputed metric (e.g., `log_total_counts`) is supplied, set `log=False`
@@ -199,7 +199,7 @@ https://github.com/danielchen05/SpotSweeper_py_paper
 
 ## Requirements
 
-SpotSweeper expects the input `AnnData` object to contain:
+SpotSweeper-py expects the input `AnnData` object to contain:
 
 - Spatial coordinates stored in `adata.obsm["spatial"]`
   (or another key specified by `coord_key`)

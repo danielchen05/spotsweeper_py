@@ -1,9 +1,9 @@
 .. These are examples of badges you might want to add to your README:
    please update the URLs accordingly
 
-.. image:: https://img.shields.io/pypi/v/spotsweeper_py.svg
+.. image:: https://img.shields.io/pypi/v/spotsweeper.svg
     :alt: PyPI-Server
-    :target: https://pypi.org/project/spotsweeper_py/
+    :target: https://pypi.org/project/spotsweeper/
 
 .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
     :alt: Project generated with PyScaffold
@@ -21,19 +21,24 @@ methods for the detection, visualization, and removal of both local outliers and
 regional artifacts in spot-based spatial transcriptomics data (e.g., 10x Genomics
 Visium and Visium HD), using standard QC metrics.
 
-----------
 
 Manuscript
 ----------
 
-**Title:** *SpotSweeper-py: spatially-aware quality control metrics for spatial omics data in the Python ecosystem*  
-**Authors:** Xingyi Chen, Michael Totty, Stephanie C. Hicks  
-**Venue:** bioRxiv (2025)  
-**DOI:** https://doi.org/10.64898/2025.12.06.692760
+Title:
+SpotSweeper-py: spatially-aware quality control metrics for spatial omics data in the Python ecosystem
+
+Authors:
+Xingyi Chen, Michael Totty, Stephanie C. Hicks
+
+Venue:
+bioRxiv (2025)
+
+DOI:
+https://doi.org/10.64898/2025.12.06.692760
 
 If you use SpotSweeper-py, please cite the manuscript above.
 
---------
 
 Features
 --------
@@ -44,7 +49,6 @@ Features
 - Export per-sample QC plots to multi-page PDF files
 - Visualization styles suitable for both Visium and Visium HD
 
-------------
 
 Installation
 ------------
@@ -55,14 +59,16 @@ Install from PyPI:
 
     pip install spotsweeper
 
+
 Usage
 -----
 
 SpotSweeper operates directly on ``AnnData`` objects. A typical workflow is:
 
-1) Detect local outliers for a QC metric (results are written to ``adata.obs``)
-2) Visualize a QC metric for a single sample, optionally highlighting outliers
-3) Optionally export per-sample QC plots to a multi-page PDF
+1. Detect local outliers for a QC metric (results are written to ``adata.obs``)
+2. Visualize a QC metric for a single sample, optionally highlighting outliers
+3. Optionally export per-sample QC plots to a multi-page PDF
+
 
 Quickstart (local outliers + plot + optional PDF)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,23 +84,19 @@ Quickstart (local outliers + plot + optional PDF)
     # Skip this step if the column already exists
     adata.obs["log_total_counts"] = np.log1p(adata.obs["total_counts"])
 
-    # 1) Detect local outliers using log total counts
+    # Detect local outliers using log total counts
     lo.local_outliers(
         adata,
         metric="log_total_counts",
-        direction="lower",          # "lower", "higher", or "both"
+        direction="lower",
         n_neighbors=36,
-        sample_key="region",        # column in adata.obs indicating sample IDs
-        log=False,                  # do NOT log-transform again
+        sample_key="region",
+        log=False,
         cutoff=3.0,
         coord_key="spatial",
     )
 
-    # Outputs written to adata.obs:
-    # - "log_total_counts_z"         robust local z-score
-    # - "log_total_counts_outliers"  boolean outlier flag
-
-    # 2) Visualize local outliers for a single sample
+    # Visualize local outliers for a single sample
     plot_QC.plot_qc_metrics(
         adata,
         "region",
@@ -104,7 +106,7 @@ Quickstart (local outliers + plot + optional PDF)
         legend=True,
     )
 
-    # 3) (Optional) Save per-sample QC plots to a PDF
+    # (Optional) Save per-sample QC plots to a PDF
     pdf.plot_qc_pdf(
         adata,
         "region",
@@ -112,6 +114,7 @@ Quickstart (local outliers + plot + optional PDF)
         outliers="log_total_counts_outliers",
         fname="qc_plots.pdf",
     )
+
 
 Common QC metrics
 ~~~~~~~~~~~~~~~~~
@@ -131,17 +134,19 @@ SpotSweeper will internally apply ``log1p`` and store the transformed values as
 If a precomputed metric (e.g., ``log_total_counts``) is supplied, set ``log=False``
 to avoid double transformation.
 
+
 Choosing the outlier direction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use the ``direction`` argument to control which tail(s) are flagged.
 By default, ``direction="lower"``.
 
-- ``direction="lower"`` *(default)*: flags unusually low metric values
+- ``direction="lower"`` (default): flags unusually low metric values
   (e.g., low counts or low numbers of genes)
 - ``direction="higher"``: flags unusually high metric values
   (e.g., high mitochondrial fraction)
 - ``direction="both"``: flags both tails
+
 
 Example (high mitochondrial fraction)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,15 +163,17 @@ Example (high mitochondrial fraction)
         cutoff=3.0,
     )
 
+
 Plot styling for Visium vs Visium HD
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The plotting function supports two visualization styles via ``ring_overlay``:
 
-- ``ring_overlay=True`` (default): two-layer plot (metric gradient with red rings
-  for outliers); recommended for standard Visium data.
+- ``ring_overlay=True`` (default): two-layer plot with metric gradient and red rings
+  for outliers; recommended for standard Visium data.
 - ``ring_overlay=False``: single-layer plot with red edges for outliers; recommended
   for dense Visium HD data.
+
 
 Example (dense data; single-layer style)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -184,6 +191,7 @@ Example (dense data; single-layer style)
         legend=True,
     )
 
+
 Example notebooks
 ~~~~~~~~~~~~~~~~~
 
@@ -199,7 +207,7 @@ Requirements
 SpotSweeper expects the input ``AnnData`` object to contain:
 
 - Spatial coordinates stored in ``adata.obsm["spatial"]`` (or another key specified by ``coord_key``)
-- QC metrics stored as columns in ``adata.obs`` (e.g., ``total_counts``, ``detected``, ``pct_mito``)
+- QC metrics stored as columns in ``adata.obs`` (e.g., ``total_counts``, ``detected``, ``pct_counts_mt``)
 - A sample identifier column in ``adata.obs`` (e.g., ``sample_id`` or ``region``)
 
 The package does not perform data loading or preprocessing and is agnostic to how
@@ -218,16 +226,14 @@ improvements.
 Contributing
 ------------
 
-Bug reports, feature requests, and Github issues/pull requests are welcome.
+Bug reports, feature requests, and GitHub issues or pull requests are welcome.
 
 Please submit issues and pull requests via the GitHub repository:
 https://github.com/danielchen05/spotsweeper_py
 
 
-.. _pyscaffold-notes:
-
 Note
 ====
 
-This project has been set up using PyScaffold 4.6. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
+This project has been set up using PyScaffold 4.6.
+For details and usage information on PyScaffold see https://pyscaffold.org/.

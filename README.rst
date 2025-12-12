@@ -64,10 +64,9 @@ Usage
 -----
 
 SpotSweeper operates directly on ``AnnData`` objects. A typical workflow is:
-
-1. Detect local outliers for a QC metric (results are written to ``adata.obs``)
-2. Visualize a QC metric for a single sample, optionally highlighting outliers
-3. Optionally export per-sample QC plots to a multi-page PDF
+- Detect local outliers for a QC metric (results are written to ``adata.obs``)
+- Visualize a QC metric for a single sample, optionally highlighting outliers
+- Optionally export per-sample QC plots to a multi-page PDF
 
 
 Quickstart (local outliers + plot + optional PDF)

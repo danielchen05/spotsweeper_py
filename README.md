@@ -15,8 +15,8 @@ Visium and Visium HD), using standard QC metrics.
 
 **Title:** *SpotSweeper-py: spatially-aware quality control metrics for spatial omics data in the Python ecosystem*  
 **Authors:** Xingyi Chen, Michael Totty, Stephanie C. Hicks  
-**Venue:** bioRxiv (2025)  
-**DOI:** https://doi.org/10.64898/2025.12.06.692760
+**Venue:** F1000Research (2026)  
+**DOI:** https://doi.org/10.12688/f1000research.175162.1
 
 If you use SpotSweeper-py, please cite the manuscript above.
 
@@ -214,7 +214,7 @@ the `AnnData` object is constructed.
 
 ## Project Status
 
-SpotSweeper-py is a PyPI software package accompanying a bioRxiv preprint.
+SpotSweeper-py is a PyPI software package accompanying a published F1000Research article.
 The core methodology and functionality are stable and documented in the manuscript,
 while the software interface may continue to evolve with additional features and
 improvements.
